@@ -48,6 +48,18 @@ def valid_state(state):
 def switch_players(state):
     return (state[1], state[0])
 
+def can_split(player):
+    def splittable(h1, h2):
+        return h1 == 0 and (h2 == 2 or h2 == 4)
+
+    return splittable(player[0], player[1]) or splittable(player[1], player[0])
+
+def split_player(player):
+    if player[0] == 2 or player[1] == 2:
+        return (1, 1)
+    else:
+        return (2, 2)
+
 def best_outcome(o1, o2):
     if isinstance(o1, Win) or isinstance(o2, Win):
         return Win()
@@ -92,7 +104,10 @@ def solve(state, seen, known):
     rr_move = ((state[1][0], inc_hand(state[1][1], state[0][1])), copy_player(state[0]))
     best_res = best_outcome(best_res, solve(rr_move, seen, known))
 
-    # TODO split moves
+    if can_split(state[0]):
+        new_p = split_player(state[0])
+        new_state = (state[1], new_p)
+        best_res = best_outcome(best_res, flip_result(solve(new_state, seen, known)))
 
     known[state] = best_res
     return best_res
