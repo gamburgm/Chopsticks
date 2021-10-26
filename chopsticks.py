@@ -4,13 +4,16 @@
 # a Hand is a number betwee 0 inclusive and 5 exclusive.
 
 class Win:
-    pass
+    def __str__(self):
+        return "Win"
 
 class Lose:
-    pass
+    def __str__(self):
+        return "Lose"
 
 class Draw:
-    pass
+    def __str__(self):
+        return "Draw"
 
 def inc_hand(h, val):
     return (h + val) % 5
