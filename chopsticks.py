@@ -1,3 +1,4 @@
+import sys
 
 # a GameState is a 2-ple of PlayerStates, where the first represents the current player, and the second, the opponent.
 # a PlayerState is a 2-ple of Hands.
@@ -120,4 +121,24 @@ def solve(state, seen, known):
     known[state] = best_res
     return best_res
 
-print(solve(((1, 1), (1, 1)), set(), {}))
+if len(sys.argv[1:]) == 0:
+    print(solve(((1, 1), (1, 1)), set(), {}))
+    sys.exit(1)
+
+nums = sys.argv[1:]
+ERROR = "Usage: chopsticks.py [Int Int Int Int]\nEither provide no command line arguments or provide 4 valid hands.\nA valid hand is an integer between 0 inclusive and 5 exclusive."
+
+if len(nums) != 4:
+    print(ERROR)
+    sys.exit(1)
+elif not list(filter(lambda x: x.isdigit(), nums)):
+    print(ERROR)
+    sys.exit(1)
+
+n1, n2, n3, n4 = int(nums[0]), int(nums[1]), int(nums[2]), int(nums[3])
+
+if not (valid_hand(n1) and valid_hand(n2) and valid_hand(n3) and valid_hand(n4)):
+    print(ERROR)
+    sys.exit(1)
+
+print(solve(((n1, n2), (n3, n4)), set(), {}))
