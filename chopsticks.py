@@ -62,6 +62,14 @@ def best_outcome(o1, o2):
 
     return Lose()
 
+def flip_result(res):
+    if isinstance(res, Win):
+        return Lose()
+    if isinstance(res, Lose):
+        return Win()
+
+    return Draw()
+
 # GameState, Set[GameState], Map[GameState, Result] -> Result
 def solve(state, seen, known):
     if state in known:
